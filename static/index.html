@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6fb">
+  <meta name="description" content="Analyze an English sentence with a trained BiGRU and explore its six emotion scores.">
+  <title>Toneprint · Sentence analysis</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="mast-inner">
+      <a class="brand" href="/" aria-label="Toneprint home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        Toneprint
+      </a>
+      <div class="tools">
+        <a class="api-link" href="/docs">API docs</a>
+        <span class="service" id="service" role="status" data-mode="checking">
+          <i aria-hidden="true"></i><span id="service-text">Checking model</span>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <div class="intro">
+      <h1>Sentence <em>analysis</em></h1>
+      <p>Write in English to see how a bidirectional GRU scores six emotions.</p>
+    </div>
+
+    <div class="panels">
+      <section class="card editor" aria-labelledby="editor-title">
+        <form id="sentence-form" novalidate>
+          <div class="card-heading">
+            <h2 id="editor-title"><label for="sentence">Your sentence</label></h2>
+            <span class="char-count" id="char-count">0 / 2,000</span>
+          </div>
+          <textarea id="sentence" name="text" maxlength="2000" required
+            placeholder="How would you describe the feeling in your own words?"
+            aria-describedby="char-count"></textarea>
+          <div class="examples">
+            <span>Try a sentence</span>
+            <div class="example-buttons">
+              <button type="button" data-example="My heart feels full of joy after hearing the good news.">Good news</button>
+              <button type="button" data-example="I feel terrified walking home alone in the dark.">A night walk</button>
+              <button type="button" data-example="I am furious that the train was cancelled again.">Travel plans</button>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="analyze" type="submit" id="analyze" disabled>Analyze emotion</button>
+            <span class="shortcut" id="shortcut">Ctrl + Enter</span>
+          </div>
+          <p class="error" id="error" role="alert" hidden></p>
+        </form>
+
+        <div class="token-panel">
+          <div class="token-heading">
+            <h3>Token window</h3>
+            <span id="token-limit" class="small-value">—</span>
+          </div>
+          <div id="token-strip" class="token-strip" aria-hidden="true"></div>
+          <p id="token-note">After analysis, each filled slot represents one token the model read.</p>
+        </div>
+      </section>
+
+      <section class="card report" aria-labelledby="report-title">
+        <div class="card-heading"><h2 id="report-title">Prediction</h2></div>
+        <div class="result-band" id="result-band">
+          <div class="signal-icon" id="signal-icon" aria-hidden="true">✎</div>
+          <div class="summary">
+            <h3 id="top-emotion">Awaiting a sentence</h3>
+            <p id="confidence">Your top emotion will appear here.</p>
+          </div>
+        </div>
+        <blockquote id="submitted-text" hidden></blockquote>
+        <h3 class="scores-heading">Emotion scores</h3>
+        <ol id="scores" class="scores" aria-label="Six emotion scores"></ol>
+      </section>
+    </div>
+    <p class="screen-reader" role="status" id="announcement"></p>
+    <template id="score-template">
+      <li class="score-row">
+        <span class="score-label"><i class="swatch" aria-hidden="true"></i><span class="name"></span></span>
+        <span class="track" aria-hidden="true"><span class="fill"></span></span>
+        <span class="score-value"></span>
+      </li>
+    </template>
+    <noscript><p>Enable JavaScript to submit a sentence and display predictions.</p></noscript>
+  </main>
+</body>
+</html>
